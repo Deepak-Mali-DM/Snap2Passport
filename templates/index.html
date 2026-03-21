@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Snap2Passport - Passport Size Photo Maker</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <!-- Cropper.js -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.13/cropper.min.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="logo">
+                <i class="fas fa-camera-retro"></i>
+                <h1>Snap2Passport</h1>
+            </div>
+            <p>Generate high-quality passport size photo sheets for printing.</p>
+        </header>
+
+        <main>
+            <div class="card shadow">
+                <div class="upload-section">
+                    <div class="form-group">
+                        <label for="imageUpload" class="drop-zone" id="dropZone">
+                            <i class="fas fa-cloud-upload-alt"></i>
+                            <span class="drop-zone__prompt">Drop image here or click to upload</span>
+                            <input type="file" id="imageUpload" name="image" accept="image/*" class="drop-zone__input">
+                        </label>
+                    </div>
+
+                    <div id="croppingArea" style="display: none; margin-bottom: 2rem;">
+                        <div class="crop-header">
+                            <h3><i class="fas fa-crop-alt"></i> Adjust Your Photo</h3>
+                            <p>Crop to fit the passport frame. Ensure head is centered with space at the top.</p>
+                        </div>
+                        <div class="cropper-container">
+                            <img id="croppingImage" style="max-width: 100%;">
+                        </div>
+                        <div class="crop-controls">
+                            <button id="resetCropBtn" class="btn btn-secondary">
+                                <i class="fas fa-undo"></i> Reset
+                            </button>
+                            <button id="addToGalleryBtn" class="btn btn-primary">
+                                <i class="fas fa-plus"></i> Add to Sheet
+                            </button>
+                        </div>
+                    </div>
+
+                    <div id="photoGallerySection" class="gallery-section" style="display: none;">
+                        <div class="gallery-header">
+                            <h3><i class="fas fa-images"></i> Photos to Print</h3>
+                            <div class="capacity-badge" id="capacityBadge">0 / 8 slots filled</div>
+                        </div>
+                        <div id="photoList" class="photo-list">
+                            <!-- Dynamically added photos will appear here -->
+                        </div>
+                    </div>
+
+                    <div class="controls">
+                        <div class="form-group">
+                            <label for="sheetType">Select Sheet Type</label>
+                            <select id="sheetType" class="form-control">
+                                <option value="4x6">4×6 Inch Sheet (8 Photos)</option>
+                                <option value="A4">A4 Sheet (42 Photos)</option>
+                            </select>
+                        </div>
+                        <div class="form-group" id="orientationGroup">
+                            <label>Orientation</label>
+                            <div class="radio-group">
+                                <label class="radio-btn">
+                                    <input type="radio" name="orientation" value="portrait" checked>
+                                    <span>Portrait</span>
+                                </label>
+                                <label class="radio-btn">
+                                    <input type="radio" name="orientation" value="landscape">
+                                    <span>Landscape</span>
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Extra Options</label>
+                            <div class="checkbox-group">
+                                <label class="checkbox-btn">
+                                    <input type="checkbox" id="addMargins" name="add_margins">
+                                    <span><i class="fas fa-border-style"></i> Add Cutting Margins</span>
+                                </label>
+                            </div>
+                        </div>
+
+                        <button id="generateBtn" class="btn btn-primary" disabled>
+                            <i class="fas fa-magic"></i> Generate Sheet
+                        </button>
+                    </div>
+                </div>
+
+                <div class="preview-section" id="previewSection" style="display: none;">
+                    <div class="preview-header">
+                        <h3>Generated Sheet Preview</h3>
+                        <a id="downloadBtn" class="btn btn-success" download="passport_sheet.jpg">
+                            <i class="fas fa-download"></i> Download JPG
+                        </a>
+                    </div>
+                    <div class="canvas-container">
+                        <canvas id="previewCanvas"></canvas>
+                    </div>
+                </div>
+
+                <div class="loading-overlay" id="loadingOverlay">
+                    <div class="spinner"></div>
+                    <p>Processing your image...</p>
+                </div>
+            </div>
+        </main>
+
+        <footer>
+            <p>&copy; 2024 Snap2Passport. High-quality print-ready sheets at 300 DPI.</p>
+        </footer>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.13/cropper.min.js"></script>
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+</body>
+</html>
